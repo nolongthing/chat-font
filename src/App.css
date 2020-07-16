@@ -1,4 +1,8 @@
 @import '~antd/dist/antd.css';
+.App{
+  height: 100%;
+  width: 100%;
+}
 .box{
   width: 2rem;
   height: 2rem;
