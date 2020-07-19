@@ -2,40 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { PageHeader, Mentions, Button, Form } from 'antd';
 import cns from 'classnames';
 import { UpOutlined } from '@ant-design/icons';
+import Message from 'Components/Message';
 
 import styles from './login.module.scss';
+import { userList, messageList } from './mock';
+
 const { Option } = Mentions;
-const userList = {
-  groupId: 1,
-  groupName: 'aaa',
-  totalNum: 3,
-  currentNum: 1,
-  list: [
-    {
-      name: 'lee',
-      userId: 9527,
-      token: 'asd990',
-      onLine: true,
-      headIcon: 'mouse'
-    },
-    {
-      name: 'jane',
-      userId: 1001,
-      token: 'yyy001',
-      onLine: true,
-      headIcon: 'pig'
-    },
-    {
-      name: 'sam',
-      userId: 2306,
-      token: 'alu001',
-      onLine: true,
-      headIcon: 'tiger'
-    },
-  ]
-}
 export default function Chat() {
   const [isPull, setIsPull] = useState(false);
+  const [messages, setMessages] = useState(messageList);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -47,7 +22,7 @@ export default function Chat() {
   /* 消息发送 */
   function handleSendMessage() {
     console.log(form.getFieldValue('message'));
-    form.setFieldsValue({message:''})
+    form.setFieldsValue({ message: '' })
   }
 
   /* 头像点击事件 */
@@ -73,7 +48,18 @@ export default function Chat() {
           })
         }
       </div>
-      <div className={styles["chat-content"]}></div>
+      <div className={styles["chat-content"]}>
+        {
+          messages.map(item => {
+            return (
+              <Message
+                data={item}
+                isMe={item.from == 'lee'}
+              />
+            )
+          })
+        }
+      </div>
       <div className={styles["input-content"]}>
         <Form form={form}>
           <Form.Item name="message">
