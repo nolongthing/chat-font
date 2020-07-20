@@ -6,21 +6,21 @@ const userList = {
   list: [
     {
       name: 'lee',
-      userId: 9527,
+      userId: 1001,
       token: 'asd990',
       onLine: true,
       headIcon: 'mouse'
     },
     {
       name: 'jane',
-      userId: 1001,
+      userId: 1002,
       token: 'yyy001',
-      onLine: true,
+      onLine: false,
       headIcon: 'pig'
     },
     {
       name: 'sam',
-      userId: 2306,
+      userId: 1003,
       token: 'alu001',
       onLine: true,
       headIcon: 'tiger'
@@ -28,6 +28,24 @@ const userList = {
   ]
 };
 const messageList = [
+  {
+    from: 'sam',
+    fromId:1003,
+    to:'groupA',
+    toId:9001,
+    message:'你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭',
+    isGroup:true,
+    date:1595165159592,
+    img:'tiger'
+  },
+  {
+    from: 'lee',
+    to:'groupA',
+    message:'好滴',
+    isGroup:true,
+    date:1595165159592,
+    img:'mouse'
+  },
   {
     from: 'sam',
     to:'groupA',
@@ -39,7 +57,55 @@ const messageList = [
   {
     from: 'lee',
     to:'groupA',
-    message:'老子不吃',
+    message:'好滴',
+    isGroup:true,
+    date:1595165159592,
+    img:'mouse'
+  },
+  {
+    from: 'sam',
+    to:'groupA',
+    message:'你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭',
+    isGroup:true,
+    date:1595165159592,
+    img:'tiger'
+  },
+  {
+    from: 'lee',
+    to:'groupA',
+    message:'好滴',
+    isGroup:true,
+    date:1595165159592,
+    img:'mouse'
+  },
+  {
+    from: 'sam',
+    to:'groupA',
+    message:'你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭',
+    isGroup:true,
+    date:1595165159592,
+    img:'tiger'
+  },
+  {
+    from: 'lee',
+    to:'groupA',
+    message:'好滴',
+    isGroup:true,
+    date:1595165159592,
+    img:'mouse'
+  },
+  {
+    from: 'sam',
+    to:'groupA',
+    message:'你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭你妈叫你回家吃饭',
+    isGroup:true,
+    date:1595165159592,
+    img:'tiger'
+  },
+  {
+    from: 'lee',
+    to:'groupA',
+    message:'好滴',
     isGroup:true,
     date:1595165159592,
     img:'mouse'

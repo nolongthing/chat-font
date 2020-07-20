@@ -4,25 +4,53 @@ import cns from 'classnames';
 import { UpOutlined } from '@ant-design/icons';
 import Message from 'Components/Message';
 
-import styles from './login.module.scss';
+import {ws} from 'ApiService/socket';
+import styles from './chat.module.scss';
 import { userList, messageList } from './mock';
 
 const { Option } = Mentions;
 export default function Chat() {
   const [isPull, setIsPull] = useState(false);
   const [messages, setMessages] = useState(messageList);
+  const chatBox = useRef(null);
   const [form] = Form.useForm();
 
   useEffect(() => {
-  }, [])
+    setBottom();
+  }, []);
+  useEffect(() => {
+    setBottom();
+  }, [messages]);
+
+  function setBottom() {
+    const { scrollHeight, clientHeight } = chatBox.current;
+    chatBox.current.scrollTop = scrollHeight - clientHeight;
+  }
   function handlePull() {
     setIsPull(!isPull);
   }
 
   /* 消息发送 */
   function handleSendMessage() {
+    const message = form.getFieldValue('message');
+    if (message === '') {
+      return;
+    }
     console.log(form.getFieldValue('message'));
-    form.setFieldsValue({ message: '' })
+    form.setFieldsValue({ message: '' });
+    /* 需要当前用户姓名+头像，组群信息 */
+    const temp = {
+      from: 'lee',
+      to: 'groupA',
+      message,
+      isGroup: true,
+      date: new Date().getTime(),
+      img: 'mouse',
+    }
+    setMessages(preList => [...preList, temp]);
+
+    /* 发送消息网络请求 */
+    ws.emit('message',temp);
   }
 
   /* 头像点击事件 */
@@ -40,7 +68,11 @@ export default function Chat() {
             return (
               <div key={item.userId} className={styles["user-box"]} onClick={() => { handleUser(item) }}>
                 <div className={styles["user-item"]}>
-                  <img src={require(`Static/svgImgs/${item.headIcon}.svg`)} alt="" />
+                  <div className={styles["head-box"]}>
+                    <img src={require(`Static/svgImgs/${item.headIcon}.svg`)} alt="" />
+                    <div className={cns(styles['dot'], styles[item.onLine ? 'onLine' : ''])}></div>
+                  </div>
+
                   <span>{item.name}</span>
                 </div>
               </div>
@@ -48,13 +80,14 @@ export default function Chat() {
           })
         }
       </div>
-      <div className={styles["chat-content"]}>
+      <div className={styles["chat-content"]} ref={chatBox}>
         {
-          messages.map(item => {
+          messages.map((item, index) => {
             return (
               <Message
+                key={'' + item.date + index}
                 data={item}
-                isMe={item.from == 'lee'}
+                isMe={item.from === 'lee'}
               />
             )
           })
@@ -64,9 +97,9 @@ export default function Chat() {
         <Form form={form}>
           <Form.Item name="message">
             <Mentions autoSize={{ minRows: 1, maxRows: 3 }} placement="top">
-              <Option value="afc163">afc163</Option>
-              <Option value="zombieJ">zombieJ</Option>
-              <Option value="lilei">lilei</Option>
+              <Option value="">待开发</Option>
+              {/* <Option value="zombieJ">zombieJ</Option>
+              <Option value="lilei">lilei</Option> */}
             </Mentions>
           </Form.Item>
           <Form.Item name="submit">
