@@ -14,7 +14,14 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/" component={Login} />
+          <Route exact path="/"
+            // component={Login}
+            render={(props) => {
+              // console.log(props);
+              // props.history.replace('/chat');
+              return <Login />
+            }}
+          />
           <Route path="/chat" component={Chat} />
         </Switch>
       </Router>
