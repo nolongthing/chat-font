@@ -13,24 +13,26 @@ instance.interceptors.request.use(function (config) {
     return config;
 });
 
-/**
- * 获取全部学生
- */   
-function getAllStudents() {
-    return instance.get('/api/student/findAll');
+function getLogin(params){
+    return axios.get('/login',{params});
 }
 
 /**
- * 添加学生
- */
-function addStuduent(params) {
-   return instance.get('/api/student/addStudent', {
-        params
-    })
-};
+ * 获取全部学生
+ */   
+// function getAllStudents() {
+//     return instance.get('/api/student/findAll');
+// }
 
+// /**
+//  * 添加学生
+//  */
+// function addStuduent(params) {
+//    return instance.get('/api/student/addStudent', {
+//         params
+//     })
+// };
 
 export {
-    getAllStudents,
-    addStuduent
+    getLogin
 };

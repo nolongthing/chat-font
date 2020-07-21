@@ -4,7 +4,7 @@ import cns from 'classnames';
 import { UpOutlined } from '@ant-design/icons';
 import Message from 'Components/Message';
 
-import {ws} from 'ApiService/socket';
+// import {ws} from 'ApiService/socket';
 import styles from './chat.module.scss';
 import { userList, messageList } from './mock';
 
@@ -50,7 +50,7 @@ export default function Chat() {
     setMessages(preList => [...preList, temp]);
 
     /* 发送消息网络请求 */
-    ws.emit('message',temp);
+    // ws.emit('message',temp);
   }
 
   /* 头像点击事件 */

@@ -1,20 +1,29 @@
 import React, { useRef } from 'react';
 import { Card, Input, Button, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { getLogin } from 'ApiService/index';
 import styles from './login.module.scss';
 
 export default function Login(props) {
   const inputValue = useRef(null);
-  function handleLogin() {
-     console.log(inputValue.current);
+  async function handleLogin() {
+    
     const value = inputValue.current.state.value;
-    if(value && value.length === 6){
-      message.success('欢迎加入,访问过程中请注意保护个人隐私');
-      props.history.replace('/chat');
-    }else{
+    inputValue.current.handleReset();
+    if (value && value.length === 6) {
+
+      const {data:{result,code}}= await getLogin({ token: value }) || {};
+      if (code === -1 || !result) {
+        message.error('邀请码错误，请重试或联系管理员');
+        
+      }
+      if (code === 0) {
+        message.success('欢迎加入,访问过程中请注意保护个人隐私');
+      }
+      // props.history.replace('/chat');
+    } else {
       message.error('邀请码不足6位，请确认并重新输入');
     }
-    inputValue.current.handleReset();
   }
   return (
     <div className={styles['login-box']}>
