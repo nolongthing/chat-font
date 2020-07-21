@@ -4,12 +4,14 @@ import cns from 'classnames';
 import { UpOutlined } from '@ant-design/icons';
 import Message from 'Components/Message';
 
-// import {ws} from 'ApiService/socket';
+import { createWs } from 'ApiService/socket';
+import { storage } from 'Static/tool';
 import styles from './chat.module.scss';
 import { userList, messageList } from './mock';
 
 const { Option } = Mentions;
-export default function Chat() {
+const { from, fromId, img } = storage.get(['from', 'fromId', 'img'])
+export default function Chat(props) {
   const [isPull, setIsPull] = useState(false);
   const [messages, setMessages] = useState(messageList);
   const chatBox = useRef(null);
@@ -40,16 +42,19 @@ export default function Chat() {
     form.setFieldsValue({ message: '' });
     /* 需要当前用户姓名+头像，组群信息 */
     const temp = {
-      from: 'lee',
+      from,
+      fromId,
       to: 'groupA',
+      toId: 9001,
       message,
       isGroup: true,
       date: new Date().getTime(),
-      img: 'mouse',
+      img,
     }
     setMessages(preList => [...preList, temp]);
 
     /* 发送消息网络请求 */
+    // const ws = createWs();
     // ws.emit('message',temp);
   }
 
@@ -87,7 +92,7 @@ export default function Chat() {
               <Message
                 key={'' + item.date + index}
                 data={item}
-                isMe={item.from === 'lee'}
+                isMe={item.fromId === fromId}
               />
             )
           })

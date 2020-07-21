@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Login from 'Pages/Login';
 import Chat from 'Pages/Chat';
+import SocketTest from 'Pages/SocketTest';
 
 import './App.css';
 
@@ -19,7 +20,8 @@ function App() {
             render={(props) => {
               // console.log(props);
               // props.history.replace('/chat');
-              return <Login />
+              return <SocketTest/>
+              // return <Login />
             }}
           />
           <Route path="/chat" component={Chat} />
