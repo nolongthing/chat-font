@@ -7,14 +7,16 @@ export default function SocketTest(props) {
   let ws;
   useEffect(() => {
     ws = createWs();
-    
+
     /* 消息接收监听事件 */
-    ws.on('message',(data)=>{
+    ws.on('message', (data) => {
       console.log(data);
     })
 
+    /* 群消息接收 */
+
     /* 服务端断开socket连接的监听事件 */
-    ws.on('disconnect',(reason)=>{
+    ws.on('disconnect', (reason) => {
       console.log(reason);
       console.log('这时候需要回到登录页并且清除local Storage')
     })
@@ -25,8 +27,9 @@ export default function SocketTest(props) {
 
 
   function handleTest() {
-    ws.emit('message',{
-      test:111
+    ws.emit('message', {
+      test: 111,
+      toId: 9001
     })
   }
   return (
