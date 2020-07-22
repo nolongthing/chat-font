@@ -20,8 +20,8 @@ function App() {
             render={(props) => {
               // console.log(props);
               // props.history.replace('/chat');
-              return <SocketTest/>
-              // return <Login />
+              // return <SocketTest/>
+              return <Login />
             }}
           />
           <Route path="/chat" component={Chat} />

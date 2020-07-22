@@ -10,7 +10,8 @@ import styles from './chat.module.scss';
 import { userList, messageList } from './mock';
 
 const { Option } = Mentions;
-const { from, fromId, img } = storage.get(['from', 'fromId', 'img'])
+const { from, fromId, img } = storage.get(['from', 'fromId', 'img']);
+let ws;
 export default function Chat(props) {
   const [isPull, setIsPull] = useState(false);
   const [messages, setMessages] = useState(messageList);
@@ -19,6 +20,7 @@ export default function Chat(props) {
 
   useEffect(() => {
     setBottom();
+    setSocket();
   }, []);
   useEffect(() => {
     setBottom();
@@ -32,6 +34,19 @@ export default function Chat(props) {
     setIsPull(!isPull);
   }
 
+  /* 初始化socket请求 */
+  function setSocket() {
+    ws = createWs({
+      query: {
+        groupId: '9001',
+      }
+    });
+    /* 接收消息推送 */
+    ws.on('message',data=>{
+      setMessages(preList => [...preList, data]);
+    });
+
+  }
   /* 消息发送 */
   function handleSendMessage() {
     const message = form.getFieldValue('message');
@@ -45,7 +60,7 @@ export default function Chat(props) {
       from,
       fromId,
       to: 'groupA',
-      toId: 9001,
+      toId: '9001',
       message,
       isGroup: true,
       date: new Date().getTime(),
@@ -54,8 +69,7 @@ export default function Chat(props) {
     setMessages(preList => [...preList, temp]);
 
     /* 发送消息网络请求 */
-    // const ws = createWs();
-    // ws.emit('message',temp);
+    ws.emit('message',temp);
   }
 
   /* 头像点击事件 */
@@ -68,7 +82,7 @@ export default function Chat(props) {
         <span onClick={handlePull}>小学生尬聊一群<UpOutlined twoToneColor="#52c41a" className={cns(styles['pull-icon'], styles[isPull ? 'roll' : ''])} /></span>
       </PageHeader>
       <div className={cns(styles['group-detail'], styles[isPull ? 'show' : ''])}>
-        {
+        {/* {
           userList.list.map(item => {
             return (
               <div key={item.userId} className={styles["user-box"]} onClick={() => { handleUser(item) }}>
@@ -83,7 +97,7 @@ export default function Chat(props) {
               </div>
             )
           })
-        }
+        } */}
       </div>
       <div className={styles["chat-content"]} ref={chatBox}>
         {

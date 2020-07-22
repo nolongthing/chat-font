@@ -6,7 +6,23 @@ import { storage } from 'Static/tool';
 export default function SocketTest(props) {
   let ws;
   useEffect(() => {
-    ws = createWs();
+    /* test */
+    // const ws1 = createWs({
+    //   query:{
+    //     groupId:'9002',
+    //   }
+    // });
+
+    // ws1.on('message', data => {
+    //   console.log(data, '9001');
+    // })
+
+    ws = createWs({
+      query:{
+        groupId:'9001',
+      }
+    });
+    /* 服务启动监听 */
 
     /* 消息接收监听事件 */
     ws.on('message', (data) => {
@@ -24,7 +40,6 @@ export default function SocketTest(props) {
       /* 跳转页面之前  手动清除ws */
     }
   }, [])
-
 
   function handleTest() {
     ws.emit('message', {

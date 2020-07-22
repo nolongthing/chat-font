@@ -14,7 +14,7 @@ instance.interceptors.request.use(function (config) {
 });
 
 function getLogin(params){
-    return axios.get('/login',{params});
+    return axios.get('http://47.103.124.146:3000/login',{params});
 }
 
 /**
