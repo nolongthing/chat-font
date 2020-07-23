@@ -1,7 +1,10 @@
 import io from 'socket.io-client';
 
-function createWs(params={}) {
-  const ws = io("localhost:5000/chat",params);
+const host = process.env.NODE_ENV === 'development' ? 'localhost:5000' : '';
+
+/* 创建群聊通道 */
+function createWs(params = {}) {
+  const ws = io(`${host}/chat`, params);
   return ws;
 }
 

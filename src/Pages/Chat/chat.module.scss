@@ -1,8 +1,8 @@
 .container {
   position: relative;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
   overflow: hidden;
 
   .group-detail {
@@ -73,7 +73,7 @@
   text-align: center;
   font-weight: 700;
   box-shadow: 0 0.02rem 0.04rem rgba(0, 0, 0, .1);
-
+  height: 66px;
   .pull-icon {
     margin-left: 0.04rem;
     color: #2196f3;
@@ -88,11 +88,13 @@
 .chat-content {
   // flex-grow: 1;
   // flex-shrink: 0;
+  height: calc(100% - 132px);
   overflow-y: scroll;
   background-color: #eee;
 }
 
 .input-content {
+  height: 66px;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;

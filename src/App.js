@@ -21,7 +21,7 @@ function App() {
               // console.log(props);
               // props.history.replace('/chat');
               // return <SocketTest/>
-              return <Login />
+              return <Login history={props.history} />
             }}
           />
           <Route path="/chat" component={Chat} />

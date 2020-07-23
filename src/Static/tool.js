@@ -15,6 +15,11 @@ const storage = {
   },
   clear:function(){
     localStorage.clear();
+  },
+  remove:function(arr){
+    arr.forEach(item=>{
+      localStorage.removeItem(item);
+    })
   }
 }
 

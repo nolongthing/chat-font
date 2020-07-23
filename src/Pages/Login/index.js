@@ -27,7 +27,7 @@ export default function Login(props) {
           img: headIcon,
         });
         message.success('欢迎加入,访问过程中请注意保护个人隐私');
-        // props.history.replace('/chat');
+        props.history.replace('/chat');
       }
     } else {
       message.error('邀请码不足6位，请确认并重新输入');

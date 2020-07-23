@@ -1,24 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PageHeader, Mentions, Button, Form } from 'antd';
+import { PageHeader, Mentions, Button, Form, message } from 'antd';
 import cns from 'classnames';
 import { UpOutlined } from '@ant-design/icons';
 import Message from 'Components/Message';
-
+import Line from 'Components/Line';
 import { createWs } from 'ApiService/socket';
 import { storage } from 'Static/tool';
 import styles from './chat.module.scss';
-import { userList, messageList } from './mock';
 
 const { Option } = Mentions;
-const { from, fromId, img } = storage.get(['from', 'fromId', 'img']);
 let ws;
 export default function Chat(props) {
+  const { from, fromId, img } = storage.get(['from', 'fromId', 'img']);
   const [isPull, setIsPull] = useState(false);
-  const [messages, setMessages] = useState(messageList);
+  const [messages, setMessages] = useState([]);
   const chatBox = useRef(null);
   const [form] = Form.useForm();
 
   useEffect(() => {
+    if (!fromId) {
+      message.error('登陆已失效，请重新登录');
+      props.history.replace('/');
+      return;
+    }
     setBottom();
     setSocket();
   }, []);
@@ -36,16 +40,36 @@ export default function Chat(props) {
 
   /* 初始化socket请求 */
   function setSocket() {
+
+    /* 生成指定群聊房间 */
     ws = createWs({
       query: {
         groupId: '9001',
       }
     });
+
+    /* 上线消息推送 */
+    ws.on('online', (data) => {
+      setMessages(preList => [...preList, { ...data, type: 'online' }]);
+    })
     /* 接收消息推送 */
-    ws.on('message',data=>{
+    ws.on('message', data => {
       setMessages(preList => [...preList, data]);
     });
 
+    /* 离线消息推送 */
+    ws.on('offline', (data) => {
+      setMessages(preList => [...preList, { ...data, type: 'offline' }]);
+    })
+
+    /* 断开连接 */
+    ws.on('disconnect', (reason) => {
+      if (reason === 'io server disconnect') {
+        storage.remove(['from', 'fromId', 'img']);
+        message.error('登陆已失效，请重新登录');
+        props.history.replace('/');
+      }
+    });
   }
   /* 消息发送 */
   function handleSendMessage() {
@@ -53,7 +77,7 @@ export default function Chat(props) {
     if (message === '') {
       return;
     }
-    console.log(form.getFieldValue('message'));
+    // console.log(form.getFieldValue('message'));
     form.setFieldsValue({ message: '' });
     /* 需要当前用户姓名+头像，组群信息 */
     const temp = {
@@ -66,10 +90,10 @@ export default function Chat(props) {
       date: new Date().getTime(),
       img,
     }
-    setMessages(preList => [...preList, temp]);
+    // setMessages(preList => [...preList, temp]);
 
     /* 发送消息网络请求 */
-    ws.emit('message',temp);
+    ws.emit('message', temp);
   }
 
   /* 头像点击事件 */
@@ -102,6 +126,14 @@ export default function Chat(props) {
       <div className={styles["chat-content"]} ref={chatBox}>
         {
           messages.map((item, index) => {
+            if (item.type) {
+              return (
+                <Line
+                  key={index + item.type}
+                  data={item}
+                />
+              )
+            }
             return (
               <Message
                 key={'' + item.date + index}
